@@ -60,124 +60,25 @@ int main(void) {
     /* Vertex + Fragment */
     // Shader* VFShader = malloc(sizeof(Shader));
     Shader* VFShader = create_shader();
-    // create_program(&VFShader->m_PID);
-    // VFShader->m_PID = glCreateProgram();
-    // create_program(&VFShader->m_PID);
-    // GLuint VertexShader = glCreateShader(GL_VERTEX_SHADER);
-    // GLuint FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    // compile(VertexShader, FragmentShader);
-    // attach(VFShader, VertexShader, FragmentShader);
-
-    // float vertices[] = {
-    //      0.3f,  0.3f, 0.0f,  // top right
-    //      0.3f, -0.3f, 0.0f,  // bottom right
-    //     -0.3f, -0.3f, 0.0f,  // bottom left
-    //     -0.3f,  0.3f, 0.0f   // top left 
-    // };
-
-// float vertices_with_colors[] = {
-//     // Front Face
-//     -0.5f, -0.5f, -0.5f,   0.82f, 0.13f, 0.45f,
-//      0.5f, -0.5f, -0.5f,   0.22f, 0.91f, 0.30f,
-//      0.5f,  0.5f, -0.5f,   0.70f, 0.40f, 0.99f,
-//     -0.5f,  0.5f, -0.5f,   0.15f, 0.65f, 0.80f,
-
-//     // Back Face
-//     -0.5f, -0.5f,  0.5f,   0.94f, 0.28f, 0.18f,
-//      0.5f, -0.5f,  0.5f,   0.33f, 0.72f, 0.86f,
-//      0.5f,  0.5f,  0.5f,   0.61f, 0.19f, 0.77f,
-//     -0.5f,  0.5f,  0.5f,   0.10f, 0.88f, 0.42f,
-
-//     // Left Face
-//     -0.5f,  0.5f, -0.5f,   0.55f, 0.47f, 0.91f,
-//     -0.5f, -0.5f, -0.5f,   0.29f, 0.83f, 0.14f,
-//     -0.5f, -0.5f,  0.5f,   0.76f, 0.21f, 0.68f,
-//     -0.5f,  0.5f,  0.5f,   0.48f, 0.59f, 0.32f,
-
-//     // Right Face
-//      0.5f, -0.5f, -0.5f,   0.90f, 0.11f, 0.53f,
-//      0.5f,  0.5f, -0.5f,   0.37f, 0.74f, 0.25f,
-//      0.5f,  0.5f,  0.5f,   0.66f, 0.44f, 0.88f,
-//      0.5f, -0.5f,  0.5f,   0.18f, 0.92f, 0.60f,
-
-//     // Bottom Face
-//     -0.5f, -0.5f, -0.5f,   0.73f, 0.36f, 0.81f,
-//      0.5f, -0.5f, -0.5f,   0.26f, 0.95f, 0.09f,
-//      0.5f, -0.5f,  0.5f,   0.58f, 0.17f, 0.67f,
-//     -0.5f, -0.5f,  0.5f,   0.41f, 0.69f, 0.23f,
-
-//     // Top Face
-//      0.5f,  0.5f, -0.5f,   0.85f, 0.14f, 0.34f,
-//     -0.5f,  0.5f, -0.5f,   0.20f, 0.87f, 0.52f,
-//     -0.5f,  0.5f,  0.5f,   0.63f, 0.31f, 0.93f,
-//      0.5f,  0.5f,  0.5f,   0.12f, 0.78f, 0.66f,
-// };
-
-
-
-//     unsigned int indices[] = { 
-//         0, 3, 2,
-//         2, 1, 0,
-//         4, 5, 6,
-//         6, 7 ,4,
-//         // left and right
-//         11, 8, 9,
-//         9, 10, 11,
-//         12, 13, 14,
-//         14, 15, 12,
-//         // bottom and top
-//         16, 17, 18,
-//         18, 19, 16,
-//         20, 21, 22,
-//         22, 23, 20,
-//     };
-    // fBuffer* b = new_fbuffer();
-    // fpush_buffer_batch_data(b, vertices, sizeof(vertices) / sizeof(vertices[0]));
-    // display_fbuffer_contents(b);
-
-    // uiBuffer* ind = new_uibuffer();
-    // upush_buffer_batch_data(ind, indices, sizeof(indices) / sizeof(indices[0]));
-    // display_uibuffer_contents(ind);
-    // Mesh* _mesh = create_mesh();
-    // load_raw_mesh_data(_mesh, vertices_with_colors, sizeof(vertices_with_colors) / sizeof(vertices_with_colors[0]));
-    // load_raw_mesh_indices(_mesh, indices, sizeof(indices) / sizeof(indices[0]));
-
-    // set_mesh_attribute(_mesh, 3);
-    // set_mesh_attribute(_mesh, 3);
-    /* Initialize only after setting all the mesh data */
-    // initialize_mesh(_mesh);
     shader_bind(VFShader);
-    // glUseProgram(VFShader->P_ID);
-    // set_shader_mat4(VFShader, "model", _mesh->mesh_transform->model);
+
     Object* obj = create_object();
     assign_cube(obj);
-
     transform_set_position(get_object_transform(obj), (vec3s){ .x = 0.f, .y = 0.f, .z = 0.f});
-    // set_mesh_position(_mesh, (vec3){0.f, 0.5f, 1.f});
-    // set_shader_mat4(VFShader, "model", get_mesh_transform(_mesh)->model);
 
     /* Camera Calls */
     Camera* _cam = create_camera();
     camera_set_pos_vec3s(_cam, (vec3s){.x = 3.0f, .y = 3.0f, .z = 3.0f});
-    // camera_set_init_pos(_cam, (vec3){3.f, 3.f, 3.f});
-    // camera_updates_view(_cam, viewMatrix);
+
     mat4s viewMatrix;
     mat4s projection;
 
     viewMatrix = glms_mat4_identity();
     viewMatrix = camera_look_at_mat4s(_cam);
     projection = glms_perspective(0.78f, (float)appWindow.m_Width / (float)appWindow.m_Height, 0.1f, 512.0f);
-    // glm_perspective(
-    //     .78f,
-    //     (float)appWindow.m_Width / (float)appWindow.m_Height,
-    //     .1f,
-    //     512.f,
-    //     projection
-    // );
 
     set_shader_mat4s(VFShader, "projection", projection);
-    // glfwSetKeyCallback(appWindow.m_Window, camera_move_orbit_key_callback);
-    // display_fbuffer_contents(_mesh->mesh_data);
+
     /* Main loop */
     printf("camera x: %lf\n", camera_get_position(_cam).x);
     printf("camera y: %lf\n", camera_get_position(_cam).y);
@@ -192,22 +93,16 @@ int main(void) {
         /* Clear screen */        
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        // float camX = (float)(sin(glfwGetTime()) * 10.f);
-        // float camZ = (float)(cos(glfwGetTime()) * 10.f);
-        // camera_move_orbit(_cam, viewMatrix, camX, camZ);
+
         set_shader_mat4s(VFShader, "view", viewMatrix);
-        // glUseProgram(VFShader->m_PID);
-        // draw_mesh(_mesh);
         // this should actually be inside render object
         set_shader_mat4s(VFShader, "model", get_object_transform(obj)->model);
         render_object(obj);
 
         glfwPollEvents();
-        // process_input();
         glfwSwapBuffers(getWindow(&appWindow));
     }
     destroy_object(obj);
-    // destroy_mesh(&_mesh);
     destroy_shader(&VFShader);
 
     glfwDestroyWindow(getWindow(&appWindow));

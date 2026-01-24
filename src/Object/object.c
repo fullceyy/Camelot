@@ -10,8 +10,6 @@
 
     later/
 */
-
-
 struct Object {
     Mesh* mesh;
     Transform transform;

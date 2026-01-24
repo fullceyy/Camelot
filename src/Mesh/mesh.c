@@ -176,18 +176,3 @@ void set_mesh_attribute(Mesh* mesh_item, unsigned int attrib_el_count) {
 
     set_buffer_offset(mesh_item->mesh_data, attrib_el_count);
 }
-
-// void set_mesh_position(Mesh* mesh_item, vec3 new_pos) {
-//     // mesh_item->mesh_transform->position[0] = new_pos[0];
-//     // mesh_item->mesh_transform->position[1] = new_pos[1];
-//     // mesh_item->mesh_transform->position[2] = new_pos[2];
-//     transform_pos(mesh_item->mesh_transform, new_pos);    
-// }
-
-// Transform* get_mesh_transform(Mesh* mesh_item) {
-//     if(!mesh_item) {
-//         log_info("get_mesh_transform invalid Mesh* parameter!");
-//         return NULL;
-//     }
-//     return mesh_item->mesh_transform;
-// }

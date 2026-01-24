@@ -21,7 +21,4 @@ void draw_mesh(Mesh* mesh_item);
 void destroy_mesh(Mesh** mesh_item);
 
 void set_mesh_attribute(Mesh* mesh_item, unsigned int attrib_el_count);
-// void set_mesh_position(Mesh* mesh_item, vec3 new_pos);
-
-// Transform* get_mesh_transform(Mesh* mesh_item);
 #endif

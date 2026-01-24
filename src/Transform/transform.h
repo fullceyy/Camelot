@@ -87,13 +87,4 @@ static inline void transform_scale(Transform* this_transform, vec3s scale_by) {
     recompute_model_(this_transform);
 }
 
-
-// static inline void transform_set_position(Transform* this_transform, vec3s new_pos);
-// static inline void transform_translate(Transform* this_transform, vec3s translate_by);
-
-// static inline void transform_set_rotation(Transform* this_transform, vec3s new_rot);
-// static inline void transform_rotate(Transform* this_transform, vec3s rotate_by);
-
-// static inline void transform_set_scale(Transform* this_transform, vec3s new_scale);
-// static inline void transform_scale(Transform* this_transform, vec3s scale_by);
 #endif
