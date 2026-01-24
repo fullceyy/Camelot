@@ -1,0 +1,53 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build GLFW (C)",
+            "type": "shell",
+            "command": "C:/msys64/mingw64/bin/gcc.exe",
+            "args": [
+                "-g",
+				"-std=c11",
+                "-Wall",
+
+                // Include paths
+				"-Isrc",
+                "-Iinclude",
+				
+                // Source files
+                "src/main.c",
+                "src/glad.c",
+                "src/Window/window.c",
+                "src/Log/log.c",
+                "src/Shader/shader.c",
+                "src/Buffer/buffer.c",
+                "src/Mesh/mesh.c",
+                // "src/Transform/transform.c",
+                "src/Camera/camera.c",
+                "src/Object/object.c",
+                // "src/Input/input.c",
+                // Library path
+                "-Llib",
+
+                // Libraries
+                "-lglfw3",
+                "-lopengl32",
+                "-lgdi32",
+                "-luser32",
+                "-lkernel32",
+
+                // Output
+                "-o",
+                "app.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

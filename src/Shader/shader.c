@@ -49,6 +49,16 @@ Shader* create_shader() {
     return new_shader;
 }
 
+void destroy_shader(Shader** this_shader) {
+    if(!*this_shader) {
+        log_info("destroy_shader invalid Shader* parameter!");
+        return;
+    }
+    glDeleteProgram((*this_shader)->P_ID);
+    free(*this_shader);
+    *this_shader = NULL;
+}
+
 void compile(GLuint vertex_shader_id, GLuint fragment_shader_id) {
     glShaderSource(vertex_shader_id, 1, &vertexShaderSource, NULL);
     glCompileShader(vertex_shader_id);
@@ -122,4 +132,22 @@ void set_shader_vec4(Shader* this_shader, char* name, vec4 val) {
         return;
     }
     glUniform4f(location, val[0], val[1], val[2], val[3]);
+}
+
+void set_shader_mat4s(Shader* this_shader, char* name, mat4s val) {
+    GLint location = glGetUniformLocation(this_shader->P_ID, name);
+    if(location == -1) {
+        log_info("set_shader_mat4 location not found!");
+        return;
+    }
+    glUniformMatrix4fv(location, 1, GL_FALSE, &(val.m00));
+}
+
+void set_shader_vec4s(Shader* this_shader, char* name, vec4s val) {
+    GLint location = glGetUniformLocation(this_shader->P_ID, name);
+    if(location == -1) {
+        log_info("set_shader_vec4 location not found!");
+        return;
+    }
+    glUniform4f(location, val.w, val.x, val.y, val.z);
 }

@@ -1,5 +1,28 @@
 #include "mesh.h"
 
+// typedef struct {
+//     unsigned int VAO;
+//     unsigned int VBO;
+//     unsigned int EBO;
+
+//     unsigned int singleVertexOffset;
+
+//     fBuffer* mesh_data;
+//     uiBuffer* mesh_indices;
+
+//     Transform* mesh_transform;
+// } Mesh;
+
+struct Mesh {
+    unsigned int VAO;
+    unsigned int VBO;
+    unsigned int EBO;
+    unsigned int singleVertexOffset;
+    fBuffer* mesh_data;
+    uiBuffer* mesh_indices;
+    // Transform* mesh_transform;
+};
+
 Mesh* create_mesh() {
     Mesh* new_mesh = malloc(sizeof(Mesh));
     if(!new_mesh) {
@@ -14,7 +37,7 @@ Mesh* create_mesh() {
     new_mesh->mesh_data = NULL;
     new_mesh->mesh_indices = NULL;
 
-    new_mesh->mesh_transform = create_transform_component();
+    // new_mesh->mesh_transform = create_transform_component();
 
     return new_mesh;
 }
@@ -153,3 +176,18 @@ void set_mesh_attribute(Mesh* mesh_item, unsigned int attrib_el_count) {
 
     set_buffer_offset(mesh_item->mesh_data, attrib_el_count);
 }
+
+// void set_mesh_position(Mesh* mesh_item, vec3 new_pos) {
+//     // mesh_item->mesh_transform->position[0] = new_pos[0];
+//     // mesh_item->mesh_transform->position[1] = new_pos[1];
+//     // mesh_item->mesh_transform->position[2] = new_pos[2];
+//     transform_pos(mesh_item->mesh_transform, new_pos);    
+// }
+
+// Transform* get_mesh_transform(Mesh* mesh_item) {
+//     if(!mesh_item) {
+//         log_info("get_mesh_transform invalid Mesh* parameter!");
+//         return NULL;
+//     }
+//     return mesh_item->mesh_transform;
+// }
