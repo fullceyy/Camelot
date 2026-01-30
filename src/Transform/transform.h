@@ -72,6 +72,9 @@ static inline void transform_set_rotation(Transform* this_transform, vec3s new_r
 
 static inline void transform_rotate(Transform* this_transform, vec3s rotate_by) {
     this_transform->rotation = glms_vec3_add(this_transform->rotation, rotate_by);
+    /*
+    The Spin Glitch: Your code clamps rotation between 0.0f and 360.0f (degrees), but glm_euler_xyz expects Radians. If your cube spins uncontrollably, that is why.
+    */
     glm_vec3_clamp(rotate_by.raw, 0.f, 360.f);
     recompute_model_(this_transform);
 }
@@ -87,4 +90,23 @@ static inline void transform_scale(Transform* this_transform, vec3s scale_by) {
     recompute_model_(this_transform);
 }
 
+
+/* something like this for local transforms later if want
+void transform_translate_local(Transform* t, float distance, vec3s local_direction) {
+    // 1. We need the current Rotation Matrix to know where we are facing
+    mat4s rot_matrix = glms_mat4_identity();
+    glm_euler_xyz(t->rotation.raw, rot_matrix.raw);
+
+    // 2. Transform the local direction (e.g., Forward is 0,0,-1) by our rotation
+    // Note: 'vec4' is needed for matrix multiplication. w=0.0 because it's a direction, not a point.
+    vec4s direction_vec = glms_vec4(local_direction, 0.0f);
+    vec4s rotated_dir = glms_mat4_mulv(rot_matrix, direction_vec);
+
+    // 3. Add this rotated vector to our World Position
+    vec3s world_movement = glms_vec3_scale((vec3s){rotated_dir.x, rotated_dir.y, rotated_dir.z}, distance);
+    t->position = glms_vec3_add(t->position, world_movement);
+    
+    recompute_model_(t);
+}
+*/
 #endif

@@ -2,11 +2,8 @@
 #include <string.h>
 #include <Window/window.h>
 #include <Shader/shader.h>
-// #include <Mesh/mesh.h>
 #include <Object/object.h>
-#include <Transform/transform.h>
 #include <Camera/camera.h>
-#include <Input/input.h>
 
 #if defined(__STDC_VERSION__)
 #  if __STDC_VERSION__ >= 202311L
@@ -49,7 +46,7 @@ int main(void) {
     
     CreateWindow(&appWindow);
     glfwMakeContextCurrent(getWindow(&appWindow));
-    glfwSetKeyCallback(getWindow(&appWindow), key_callback);
+    // glfwSetKeyCallback(getWindow(&appWindow), key_callback);
     /* Initialize GLAD */
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         fprintf(stderr, "Failed to initialize GLAD\n");
@@ -68,37 +65,34 @@ int main(void) {
 
     /* Camera Calls */
     Camera* _cam = create_camera();
-    camera_set_pos_vec3s(_cam, (vec3s){.x = 3.0f, .y = 3.0f, .z = 3.0f});
+    glfwSetWindowUserPointer(getWindow(&appWindow), _cam);
+    // camera_set_pos_vec3s(_cam, (vec3s){.x = 3.0f, .y = 3.0f, .z = 3.0f});
 
     mat4s viewMatrix;
     mat4s projection;
 
     viewMatrix = glms_mat4_identity();
-    viewMatrix = camera_look_at_mat4s(_cam);
     projection = glms_perspective(0.78f, (float)appWindow.m_Width / (float)appWindow.m_Height, 0.1f, 512.0f);
 
     set_shader_mat4s(VFShader, "projection", projection);
-
+    glfwSetKeyCallback(getWindow(&appWindow), key_callback);
     /* Main loop */
-    printf("camera x: %lf\n", camera_get_position(_cam).x);
-    printf("camera y: %lf\n", camera_get_position(_cam).y);
-    printf("camera z: %lf\n", camera_get_position(_cam).z);
-
-    printf("object x: %lf\n", get_object_transform(obj)->position.x);
-    printf("object y: %lf\n", get_object_transform(obj)->position.y);
-    printf("object z: %lf\n", get_object_transform(obj)->position.z);
     // glViewport(0, 0, (GLsizei)appWindow.m_Width,(GLsizei)appWindow.m_Height);
+    float deltaTime = 0.f;
+    float lastFrame = 0.f;
     while (!glfwWindowShouldClose(getWindow(&appWindow))) {
         glEnable(GL_DEPTH_TEST);
         /* Clear screen */        
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
 
-        set_shader_mat4s(VFShader, "view", viewMatrix);
-        // this should actually be inside render object
-        set_shader_mat4s(VFShader, "model", get_object_transform(obj)->model);
-        render_object(obj);
-
+        process_input(_cam, deltaTime);
+        viewMatrix = camera_get_view_matrix(_cam);
+        // set_shader_mat4s(VFShader, "view", viewMatrix);
+        render_object(obj, VFShader, viewMatrix);   
         glfwPollEvents();
         glfwSwapBuffers(getWindow(&appWindow));
     }
