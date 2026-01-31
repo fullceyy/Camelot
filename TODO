@@ -1,0 +1,28 @@
+Camera related;
+1. Finish Camera by adding mouse movement
+2. Limit the free camera movement by bounding it to the scene box
+3. Add ability to orbit camera up and down, as well as diagonal movement
+4. Add ability to zoom in and out in camera orbit mode
+
+Object related;
+1. Add Textures to the object
+2. Expand object shape types
+3. Review Object implementation, seems pretty sketchy for now, maybe not later
+
+UI related;
+1. Add IMGUI ability to set object color / object texture
+
+GLSL related;
+1. Look into better Mesh Implementation
+2. Look into UBOs
+3. Look into ADVANCED GLSL; https://vis.uni-jena.de/Lecture/ComputerGraphics2/Lec5_AdvancedDataGLSL.pdf
+
+Buffer related;
+1. Look into fBuffer and uBuffer
+
+Design;
+1. What doesn't have to be opaque?
+2. What should be accesible through main thread?
+3. Static keys is the answer for Camera movement?
+4. Should I avoid static memory usage at all costs?
+5. If I can't use static memory, what should I do with my Transform object?

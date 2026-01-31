@@ -11,6 +11,7 @@ typedef struct Object Object;
 Object* create_object();
 void destroy_object(Object* this_object);
 void assign_cube(Object* this_object);
-void render_object(Object* this_object, Shader* this_shader, mat4s view);
+
+void render_object(Object* this_object, Shader* this_shader);
 Transform* get_object_transform(Object* this_object);
 #endif

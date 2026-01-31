@@ -1,7 +1,7 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 #include <cglm/cglm.h>
-#include "Log/log.h"
+#include <Log/log.h>
 #include <memory.h>
 
 #define INIT_CAP 4

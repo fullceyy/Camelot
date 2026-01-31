@@ -49,8 +49,7 @@ Transform* get_object_transform(Object* this_object) {
     return &(this_object)->transform;
 }
 
-void render_object(Object* this_object, Shader* this_shader, mat4s view) {
+void render_object(Object* this_object, Shader* this_shader) {
     set_shader_mat4s(this_shader, "model", this_object->transform.model);
-    set_shader_mat4s(this_shader, "view", view);
     draw_mesh(this_object->mesh);
 }

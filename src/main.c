@@ -63,7 +63,9 @@ int main(void) {
     transform_set_position(get_object_transform(obj), (vec3s){ .x = 0.f, .y = 0.f, .z = 0.f});
 
     /* Camera Calls */
-    Camera* _cam = create_orbit_camera();
+    // Camera* _cam = create_orbit_camera();
+    Camera* _cam = create_free_camera();
+    camera_set_pos_vec3s(_cam, (vec3s) { .x = 3.f, .y = 3.f, .z = 3.f});
     glfwSetWindowUserPointer(getWindow(&appWindow), _cam);
 
     mat4s viewMatrix;
@@ -71,8 +73,6 @@ int main(void) {
 
     viewMatrix = glms_mat4_identity();
     projection = glms_perspective(0.78f, (float)appWindow.m_Width / (float)appWindow.m_Height, 0.1f, 512.0f);
-
-    set_shader_mat4s(VFShader, "projection", projection);
     glfwSetKeyCallback(getWindow(&appWindow), key_callback);
     /* Main loop */
     // glViewport(0, 0, (GLsizei)appWindow.m_Width,(GLsizei)appWindow.m_Height);
@@ -89,8 +89,12 @@ int main(void) {
         lastFrame = currentFrame;
 
         camera_process_input(_cam, deltaTime);
+        
         viewMatrix = camera_get_vmatrix(_cam);
-        render_object(obj, VFShader, viewMatrix);   
+        set_shader_mat4s(VFShader, "view", viewMatrix);
+        set_shader_mat4s(VFShader, "projection", projection);
+
+        render_object(obj, VFShader);   
 
         glfwPollEvents();
         glfwSwapBuffers(getWindow(&appWindow));
