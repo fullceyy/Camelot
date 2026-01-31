@@ -14,7 +14,7 @@ typedef struct Camera Camera;
 Camera* create_orbit_camera();
 Camera* create_free_camera();
 
-void destroy_camera(Camera* this_camera);
+void destroy_camera(Camera** this_camera);
 void camera_set_pos_vec3s(Camera* this_camera, vec3s new_pos);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 

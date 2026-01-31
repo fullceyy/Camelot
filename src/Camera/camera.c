@@ -74,12 +74,13 @@ Camera* create_free_camera() {
 }
 
 
-void destroy_camera(Camera* this_camera) {
-        if(!this_camera) {
+void destroy_camera(Camera** this_camera) {
+        if(!*this_camera) {
         log_info("destroy_camera invalid Camera* parameter!");
         return;
     }
-    free(this_camera);
+    free(*this_camera);
+    this_camera = NULL;
 }
 
 void camera_set_pos_vec3s(Camera* this_camera, vec3s new_pos) {

@@ -55,7 +55,6 @@ int main(void) {
     printf("OpenGL version: %s\n", glGetString(GL_VERSION));
 
     /* Vertex + Fragment */
-    // Shader* VFShader = malloc(sizeof(Shader));
     Shader* VFShader = create_shader();
     shader_bind(VFShader);
 
@@ -64,10 +63,8 @@ int main(void) {
     transform_set_position(get_object_transform(obj), (vec3s){ .x = 0.f, .y = 0.f, .z = 0.f});
 
     /* Camera Calls */
-    // Camera* _cam = create_camera();
     Camera* _cam = create_orbit_camera();
     glfwSetWindowUserPointer(getWindow(&appWindow), _cam);
-    // camera_set_pos_vec3s(_cam, (vec3s){.x = 3.0f, .y = 3.0f, .z = 3.0f});
 
     mat4s viewMatrix;
     mat4s projection;
@@ -86,20 +83,20 @@ int main(void) {
         /* Clear screen */        
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        // process_input(_cam, deltaTime);
         camera_process_input(_cam, deltaTime);
-        // viewMatrix = camera_get_view_matrix(_cam);
         viewMatrix = camera_get_vmatrix(_cam);
-        // set_shader_mat4s(VFShader, "view", viewMatrix);
         render_object(obj, VFShader, viewMatrix);   
+
         glfwPollEvents();
         glfwSwapBuffers(getWindow(&appWindow));
     }
     destroy_object(obj);
+    destroy_camera(&_cam);
     destroy_shader(&VFShader);
 
     glfwDestroyWindow(getWindow(&appWindow));
