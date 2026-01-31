@@ -64,7 +64,8 @@ int main(void) {
     transform_set_position(get_object_transform(obj), (vec3s){ .x = 0.f, .y = 0.f, .z = 0.f});
 
     /* Camera Calls */
-    Camera* _cam = create_camera();
+    // Camera* _cam = create_camera();
+    Camera* _cam = create_orbit_camera();
     glfwSetWindowUserPointer(getWindow(&appWindow), _cam);
     // camera_set_pos_vec3s(_cam, (vec3s){.x = 3.0f, .y = 3.0f, .z = 3.0f});
 
@@ -89,8 +90,10 @@ int main(void) {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        process_input(_cam, deltaTime);
-        viewMatrix = camera_get_view_matrix(_cam);
+        // process_input(_cam, deltaTime);
+        camera_process_input(_cam, deltaTime);
+        // viewMatrix = camera_get_view_matrix(_cam);
+        viewMatrix = camera_get_vmatrix(_cam);
         // set_shader_mat4s(VFShader, "view", viewMatrix);
         render_object(obj, VFShader, viewMatrix);   
         glfwPollEvents();
