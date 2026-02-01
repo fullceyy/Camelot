@@ -10,9 +10,9 @@ fBuffer* new_fbuffer() {
 
     buff_item->count = 0;
     buff_item->capacity = INIT_CAP;
-    buff_item->offsetCount = 0;
+    // buff_item->offsetCount = 0;
 
-    buff_item->offset = NULL;
+    // buff_item->offset = NULL;
     buff_item->vertices = malloc(INIT_CAP * sizeof(float));
     
     if(!buff_item->vertices) {
@@ -96,40 +96,43 @@ void fpush_buffer_batch_data(fBuffer* this_buffer, float* batch, size_t batch_si
     this_buffer->count += batch_size;
 }
 
-void set_buffer_offset(fBuffer* this_buffer, unsigned int offset_value) {
-    if(!this_buffer || offset_value == 0) {
-        log_info("Invalid parameters provided to set_buffer_offset!");
-        return;
-    }
+// void set_buffer_offset(fBuffer* this_buffer, unsigned int offset_value) {
+//     if(!this_buffer || offset_value == 0) {
+//         log_info("Invalid parameters provided to set_buffer_offset!");
+//         return;
+//     }
 
-    if(this_buffer->offset == NULL) {
-        this_buffer->offset = malloc(sizeof(unsigned int));
-    }
+//     if(this_buffer->offset == NULL) {
+//         this_buffer->offset = malloc(sizeof(unsigned int));
+//     }
     
-    if(!this_buffer->offset) {
-        log_info("Couldn't initialize offset array in set_buffer_offset!");
-        return;
-    }
+//     if(!this_buffer->offset) {
+//         log_info("Couldn't initialize offset array in set_buffer_offset!");
+//         return;
+//     }
 
-    this_buffer->offset[this_buffer->offsetCount] = offset_value;
-    this_buffer->offsetCount += 1;
-}
+//     this_buffer->offset[this_buffer->offsetCount] = offset_value;
+//     this_buffer->offsetCount += 1;
+// }
 
 void display_fbuffer_contents(fBuffer* this_buffer) {
-    log_info("Buffer contents: \n count: %zu,\n capacity: %zu,\n offsetCount: %zu\n", 
+    // log_info("Buffer contents: \n count: %zu,\n capacity: %zu,\n offsetCount: %zu\n", 
+    //     this_buffer->count, 
+    //     this_buffer->capacity,
+    //     this_buffer->offsetCount);
+    log_info("Buffer contents: \n count: %zu,\n capacity: %zu\n", 
         this_buffer->count, 
-        this_buffer->capacity,
-        this_buffer->offsetCount);
+        this_buffer->capacity);
 
     printf("vertices content: \n");
     for (size_t i = 0; i < this_buffer->count; ++i) {
         printf("[%zu] = %f\n", i, this_buffer->vertices[i]);
     }
 
-    printf("offset content: \n");
-    for (size_t i = 0; i < this_buffer->offsetCount; ++i) {
-        printf("[%zu] = %u\n", i, this_buffer->offset[i]);
-    }
+    // printf("offset content: \n");
+    // for (size_t i = 0; i < this_buffer->offsetCount; ++i) {
+    //     printf("[%zu] = %u\n", i, this_buffer->offset[i]);
+    // }
 }
 
 void display_uibuffer_contents(uiBuffer* this_buffer) {
@@ -161,11 +164,11 @@ void destroy_fbuffer(fBuffer** this_buffer) {
     if((*this_buffer)->vertices != NULL)
         free((*this_buffer)->vertices);
 
-    if((*this_buffer)->offset != NULL)
-        free((*this_buffer)->offset);
+    // if((*this_buffer)->offset != NULL)
+    //     free((*this_buffer)->offset);
 
     (*this_buffer)->vertices = NULL;
-    (*this_buffer)->offset = NULL;
+    // (*this_buffer)->offset = NULL;
 
     free((*this_buffer));
     //  Assigning NULL sets pointer in main stack to NULL;

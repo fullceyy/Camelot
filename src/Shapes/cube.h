@@ -1,6 +1,7 @@
 #ifndef CUBE_H
 #define CUBE_H
 
+
 float cube_vertices_with_colors[] = {
     // Front Face
     -0.5f, -0.5f, -0.5f,   0.82f, 0.13f, 0.45f,

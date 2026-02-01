@@ -9,9 +9,12 @@
 typedef struct {
     size_t count;
     size_t capacity;
-    size_t offsetCount; // amount of attributes
 
-    unsigned int* offset; // attribute sizes vec3 pos(3) vec2 uv(2), in order;
+    // THIS SHOULD BE PART OF MESH INSTEAD, THEY ARE LAYOUT DESCRIPTORS
+    // WHICH SHOULD NOT BE A PART OF DUMB BUFFER;s
+    // size_t offsetCount; // amount of attributes
+    // unsigned int* offset; // attribute sizes vec3 pos(3) vec2 uv(2), in order;
+    
     float* vertices;
 } fBuffer;
 
@@ -27,7 +30,8 @@ uiBuffer* new_uibuffer();
 void fpush_buffer_batch_data(fBuffer* this_buffer, float* batch, size_t batch_size);
 void upush_buffer_batch_data(uiBuffer* this_buffer, unsigned int* batch, size_t batch_size);
 
-void set_buffer_offset(fBuffer* this_buffer, unsigned int offset_value);
+// IS NOW SET_MESH_DATA_OFFSET() IN MESH.H;
+// void set_buffer_offset(fBuffer* this_buffer, unsigned int offset_value);
 
 void display_fbuffer_contents(fBuffer* this_buffer);
 void display_uibuffer_contents(uiBuffer* this_buffer);

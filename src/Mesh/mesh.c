@@ -17,7 +17,10 @@ struct Mesh {
     unsigned int VAO;
     unsigned int VBO;
     unsigned int EBO;
-    unsigned int singleVertexOffset;
+    
+    size_t offsetCount;
+    unsigned int* offset;
+
     fBuffer* mesh_data;
     uiBuffer* mesh_indices;
     // Transform* mesh_transform;
@@ -33,12 +36,11 @@ Mesh* create_mesh() {
     new_mesh->VAO = 0;
     new_mesh->VBO = 0;
     new_mesh->EBO = 0;
-    new_mesh->singleVertexOffset = 0;
+    new_mesh->offsetCount = 0;
+
+    new_mesh->offset = NULL;
     new_mesh->mesh_data = NULL;
     new_mesh->mesh_indices = NULL;
-
-    // new_mesh->mesh_transform = create_transform_component();
-
     return new_mesh;
 }
 
@@ -90,6 +92,26 @@ void load_raw_mesh_indices(Mesh* mesh_item, unsigned int* mesh_indices, size_t m
     upush_buffer_batch_data(mesh_item->mesh_indices, mesh_indices, mesh_indices_size);
 }
 
+void set_mesh_data_offset(Mesh* mesh_item, unsigned int offset_value) {
+    if(!mesh_item || offset_value == 0) {
+        log_info("Invalid parameters provided to set_mesh_data_offset!");
+        return;
+    }
+
+    if(mesh_item->offset == NULL) {
+        mesh_item->offset = malloc(sizeof(unsigned int));
+    }
+    
+    if(!mesh_item->offset) {
+        log_info("Couldn't initialize offset array in set_mesh_data_offset!");
+        return;
+    }
+
+    mesh_item->offset[mesh_item->offsetCount] = offset_value;
+    mesh_item->offsetCount += 1;
+}
+
+
 void initialize_mesh(Mesh* mesh_item) {
     if(!mesh_item) {
         log_info("initialize_mesh mesh_item not valid!");
@@ -114,8 +136,8 @@ void initialize_mesh(Mesh* mesh_item) {
                 GL_STATIC_DRAW);
 
     unsigned int stride_floats = 0;
-    for(unsigned int q = 0; q < mesh_item->mesh_data->offsetCount; q++) {
-        stride_floats += mesh_item->mesh_data->offset[q];
+    for(unsigned int q = 0; q < mesh_item->offsetCount; q++) {
+        stride_floats += mesh_item->offset[q];
     }
     /* 
         offset count = 2
@@ -128,11 +150,11 @@ void initialize_mesh(Mesh* mesh_item) {
 
     unsigned int curr_offset = 0;
     
-    for(unsigned int q = 0; q < mesh_item->mesh_data->offsetCount; q++) {
+    for(unsigned int q = 0; q < mesh_item->offsetCount; q++) {
 
         glVertexAttribPointer(
             q, 
-            mesh_item->mesh_data->offset[q], 
+            mesh_item->offset[q], 
             GL_FLOAT, 
             GL_FALSE, 
             stride_floats * sizeof(float), 
@@ -140,7 +162,7 @@ void initialize_mesh(Mesh* mesh_item) {
         );
                             
         glEnableVertexAttribArray(q);
-        curr_offset += mesh_item->mesh_data->offset[q];
+        curr_offset += mesh_item->offset[q];
     }
 
     glBindVertexArray(0);
@@ -161,6 +183,8 @@ void destroy_mesh(Mesh** mesh_item) {
     
     destroy_fbuffer(&(*mesh_item)->mesh_data);
     destroy_uibuffer(&(*mesh_item)->mesh_indices);
+    free((*mesh_item)->offset);
+    (*mesh_item)->offset = NULL;
     (*mesh_item)->mesh_data = NULL;
     (*mesh_item)->mesh_indices = NULL;
 
@@ -174,5 +198,6 @@ void set_mesh_attribute(Mesh* mesh_item, unsigned int attrib_el_count) {
         return;
     }
 
-    set_buffer_offset(mesh_item->mesh_data, attrib_el_count);
+    // set_buffer_offset(mesh_item->mesh_data, attrib_el_count);
+    set_mesh_data_offset(mesh_item, attrib_el_count);
 }

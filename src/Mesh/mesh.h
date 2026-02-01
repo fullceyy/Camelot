@@ -16,6 +16,8 @@ void load_raw_mesh_indices(Mesh* mesh_item, unsigned int* mesh_indices, size_t m
 void load_mesh_data(Mesh* mesh_item, fBuffer* mesh_data);
 void load_mesh_indices(Mesh* mesh_item, uiBuffer* mesh_indices);
 
+void set_mesh_data_offset(Mesh* mesh_item, unsigned int offset_value);
+
 void initialize_mesh(Mesh* mesh_item);
 void draw_mesh(Mesh* mesh_item);
 void destroy_mesh(Mesh** mesh_item);

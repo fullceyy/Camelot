@@ -58,8 +58,9 @@ int main(void) {
     Shader* VFShader = create_shader();
     shader_bind(VFShader);
 
-    Object* obj = create_object();
-    assign_cube(obj);
+    Object* obj = create_object(COLOR_MESH);
+    // setup_attributes_based_on_type(obj, COLOR_MESH);
+    load_cube(obj);
     transform_set_position(get_object_transform(obj), (vec3s){ .x = 0.f, .y = 0.f, .z = 0.f});
 
     /* Camera Calls */
