@@ -6,6 +6,17 @@
 
 #define INIT_CAP 4
 
+// typedef struct {
+//     size_t count;
+//     size_t capacity;
+//     size_t element_size;
+//     union {
+//         float* vertices;
+//         unsigned int* vertices;
+//     };
+//     or like void* rawData;
+// } GPBuffer; // GENEREAL PURPOSE BUFFER
+
 typedef struct {
     size_t count;
     size_t capacity;

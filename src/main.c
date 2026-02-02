@@ -64,8 +64,8 @@ int main(void) {
     transform_set_position(get_object_transform(obj), (vec3s){ .x = 0.f, .y = 0.f, .z = 0.f});
 
     /* Camera Calls */
-    // Camera* _cam = create_orbit_camera();
-    Camera* _cam = create_free_camera();
+    Camera* _cam = create_orbit_camera();
+    // Camera* _cam = create_free_camera();
     camera_set_pos_vec3s(_cam, (vec3s) { .x = 3.f, .y = 3.f, .z = 3.f});
     glfwSetWindowUserPointer(getWindow(&appWindow), _cam);
 

@@ -23,7 +23,6 @@ struct Mesh {
 
     fBuffer* mesh_data;
     uiBuffer* mesh_indices;
-    // Transform* mesh_transform;
 };
 
 Mesh* create_mesh() {
@@ -198,6 +197,6 @@ void set_mesh_attribute(Mesh* mesh_item, unsigned int attrib_el_count) {
         return;
     }
 
-    // set_buffer_offset(mesh_item->mesh_data, attrib_el_count);
     set_mesh_data_offset(mesh_item, attrib_el_count);
+    // set_buffer_offset(mesh_item->mesh_data, attrib_el_count);
 }
