@@ -8,8 +8,10 @@ typedef enum {
 } CAMERA_IN_USE;
 
 typedef struct {
-    float orbit_angle;  // Current angle in radians (Theta)
+    // float orbit_angle;  // Current angle in radians (Theta)
     float orbit_radius; // Distance from target
+    float orbit_yaw;
+    float orbit_pitch;
 } orbit_camera_traits;
 
 typedef struct {
@@ -48,7 +50,9 @@ Camera* create_orbit_camera() {
     }
     new_orbit_camera->position = glms_vec3_zero();
     new_orbit_camera->target = glms_vec3_zero();
-    new_orbit_camera->orbit_camera_traits.orbit_angle = 0.0f;
+    // new_orbit_camera->orbit_camera_traits.orbit_angle = 0.0f;
+    new_orbit_camera->orbit_camera_traits.orbit_pitch = 0.f;
+    new_orbit_camera->orbit_camera_traits.orbit_yaw = 0.f;
     new_orbit_camera->orbit_camera_traits.orbit_radius = 3.f; 
     new_orbit_camera->process_input = process_orbit_input;
     new_orbit_camera->camera_get_view_matrix = camera_get_orbit_view_matrix;
@@ -103,22 +107,41 @@ void camera_process_input(Camera* this_camera, float dt) {
 }
 
 void process_orbit_input(Camera* this_camera, float dt) {
-float rotationSpeed = 2.0f; // Radians per second
+    float rotationSpeed = 2.0f; // Radians per second
 
-    // Update the angle based on input
+    this_camera->orbit_camera_traits.orbit_pitch =
+        glm_clamp(
+            this_camera->orbit_camera_traits.orbit_pitch,
+            glm_rad(-89.0f),
+            glm_rad(89.0f)
+        );
+
     if(keys[GLFW_KEY_A]) {
-        this_camera->orbit_camera_traits.orbit_angle += rotationSpeed * dt;
+        this_camera->orbit_camera_traits.orbit_yaw += rotationSpeed * dt;
     }
     if(keys[GLFW_KEY_D]) {
-        this_camera->orbit_camera_traits.orbit_angle -= rotationSpeed * dt;
+        this_camera->orbit_camera_traits.orbit_yaw -= rotationSpeed * dt;
+    }
+    if(keys[GLFW_KEY_W]) {
+        this_camera->orbit_camera_traits.orbit_pitch += rotationSpeed * dt;
+    }
+    if(keys[GLFW_KEY_S]) {
+        this_camera->orbit_camera_traits.orbit_pitch -= rotationSpeed * dt;
     }
 
-    // Calculate new Cartesian coordinates from Polar coordinates
-    this_camera->position.x = 
-    this_camera->target.x + cosf(this_camera->orbit_camera_traits.orbit_angle) * this_camera->orbit_camera_traits.orbit_radius;
-    this_camera->position.z = 
-    this_camera->target.z + sinf(this_camera->orbit_camera_traits.orbit_angle) * this_camera->orbit_camera_traits.orbit_radius;
+    this_camera->position.x =
+    this_camera->target.x + this_camera->orbit_camera_traits.orbit_radius * 
+    cosf(this_camera->orbit_camera_traits.orbit_pitch) *
+    sinf(this_camera->orbit_camera_traits.orbit_yaw);
 
+    this_camera->position.y =
+    this_camera->target.y + this_camera->orbit_camera_traits.orbit_radius *
+    sinf(this_camera->orbit_camera_traits.orbit_pitch);
+    
+    this_camera->position.z =
+    this_camera->target.z + this_camera->orbit_camera_traits.orbit_radius *
+    cosf(this_camera->orbit_camera_traits.orbit_pitch) *
+    cosf(this_camera->orbit_camera_traits.orbit_yaw);
 }
 
 void process_free_input(Camera* this_camera, float dt) {

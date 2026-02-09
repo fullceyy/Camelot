@@ -10,7 +10,8 @@ Object related;
 3. Review Object implementation, seems pretty sketchy for now, maybe not later
 
 UI related;
-1. Add IMGUI ability to set object color / object texture
+X 1. Add IMGUI ability to set object color / object texture
+2. Work on added nuklear, find a better way of restoring the global state, remodel the ui.
 
 GLSL related;
 1. Look into better Mesh Implementation

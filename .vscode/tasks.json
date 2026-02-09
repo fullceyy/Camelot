@@ -25,6 +25,7 @@
                 // "src/Transform/transform.c",
                 "src/Camera/camera.c",
                 "src/Object/object.c",
+                "src/GUI/gui.c"
                 // "src/Input/input.c",
                 // Library path
                 "-Llib",

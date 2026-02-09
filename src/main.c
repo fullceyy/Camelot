@@ -4,6 +4,7 @@
 #include <Shader/shader.h>
 #include <Object/object.h>
 #include <Camera/camera.h>
+#include <GUI/gui.h>
 
 #if defined(__STDC_VERSION__)
 #  if __STDC_VERSION__ >= 202311L
@@ -54,6 +55,10 @@ int main(void) {
     }
     printf("OpenGL version: %s\n", glGetString(GL_VERSION));
 
+    /* GUI */
+    _nk_handle* ui = gen_nk_handle(appWindow.m_Window);
+    create_layout(ui);
+
     /* Vertex + Fragment */
     Shader* VFShader = create_shader();
     shader_bind(VFShader);
@@ -80,10 +85,15 @@ int main(void) {
     float deltaTime = 0.f;
     float lastFrame = 0.f;
     while (!glfwWindowShouldClose(getWindow(&appWindow))) {
-        glEnable(GL_DEPTH_TEST);
         /* Clear screen */        
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        frame_encaps(ui);
+        draw_layout(ui);
+
+        glUseProgram(VFShader->P_ID); // this should happen in object rendering instead
+        glEnable(GL_DEPTH_TEST);
 
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -95,14 +105,16 @@ int main(void) {
         set_shader_mat4s(VFShader, "view", viewMatrix);
         set_shader_mat4s(VFShader, "projection", projection);
 
-        render_object(obj, VFShader);   
+        render_object(obj, VFShader);
 
         glfwPollEvents();
+        // nk_glfw3_new_frame(get_nk_glfw(ui));
         glfwSwapBuffers(getWindow(&appWindow));
     }
     destroy_object(obj);
     destroy_camera(&_cam);
     destroy_shader(&VFShader);
+    // nk_glfw3_shutdown(get_nk_glfw(ui));
 
     glfwDestroyWindow(getWindow(&appWindow));
     glfwTerminate();
