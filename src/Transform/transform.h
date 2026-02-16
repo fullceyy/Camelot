@@ -48,9 +48,14 @@ typedef struct {
 // as to not confuse the linker.
 static inline void recompute_model_(Transform* this_transform) {
     this_transform->model = glms_mat4_identity();
-    glm_translate(this_transform->model.raw, this_transform->position.raw);
-    glm_euler_xyz(this_transform->rotation.raw, this_transform->model.raw);
-    glm_scale(this_transform->model.raw, this_transform->scale.raw);
+    this_transform->model = glms_translate(this_transform->model, this_transform->position);         // translate first
+    this_transform->model = glms_rotate_y(this_transform->model, this_transform->rotation.y);       // apply rotations
+    this_transform->model = glms_rotate_x(this_transform->model, this_transform->rotation.x);
+    this_transform->model = glms_rotate_z(this_transform->model, this_transform->rotation.z);
+    this_transform->model = glms_scale(this_transform->model, this_transform->scale); 
+    // glm_translate(this_transform->model.raw, this_transform->position.raw);
+    // glm_euler_xyz(this_transform->rotation.raw, this_transform->model.raw);
+    // glm_scale(this_transform->model.raw, this_transform->scale.raw);
 }
 
 static inline void transform_set_position(Transform* this_transform, vec3s new_pos) {

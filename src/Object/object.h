@@ -6,17 +6,22 @@
 
 #define szf(arr) (sizeof(arr) / sizeof((arr)[0]))
 
-typedef struct Object Object;
-
 typedef enum {
     COLOR_MESH,
     TEX_MESH,
 } MESH_TYPE;
 
+typedef struct {
+    Mesh* mesh;
+    MESH_TYPE mesh_type;
+    Transform transform;
+} Object;
+
 Object* create_object(MESH_TYPE mesh_type);
 void destroy_object(Object* this_object);
 void load_cube(Object* this_object);
 void setup_attributes_based_on_type(Object* this_object);
+size_t get_object_struct_size();
 
 void render_object(Object* this_object, Shader* this_shader);
 Transform* get_object_transform(Object* this_object);

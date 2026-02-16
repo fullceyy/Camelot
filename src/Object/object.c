@@ -9,11 +9,9 @@
 
     later/
 */
-struct Object {
-    Mesh* mesh;
-    MESH_TYPE mesh_type;
-    Transform transform;
-};
+size_t get_object_struct_size() {
+    return sizeof(Object);
+}
 
 Object* create_object(MESH_TYPE mesh_type) {
     Object* new_object = malloc(sizeof(Object));
@@ -31,18 +29,13 @@ void destroy_object(Object* this_object) {
         log_info("destroy_object invalid Object* parameter!");
         return;        
     }
-
     destroy_mesh(&(this_object)->mesh);
 }
 
 void load_cube(Object* this_object) {
     setup_attributes_based_on_type(this_object);
-
     load_raw_mesh_data(this_object->mesh, cube_vertices_with_colors, szf(cube_vertices_with_colors));
     load_raw_mesh_indices(this_object->mesh, cube_indices, szf(cube_indices));
-
-    // set_mesh_attribute(this_object->mesh, 3);
-    // set_mesh_attribute(this_object->mesh, 3);
     initialize_mesh(this_object->mesh);
 }
 
@@ -72,6 +65,8 @@ Transform* get_object_transform(Object* this_object) {
 }
 
 void render_object(Object* this_object, Shader* this_shader) {
+    shader_bind(this_shader);
+    
     set_shader_mat4s(this_shader, "model", this_object->transform.model);
     draw_mesh(this_object->mesh);
 }

@@ -116,10 +116,10 @@ void process_orbit_input(Camera* this_camera, float dt) {
             glm_rad(89.0f)
         );
 
-    if(keys[GLFW_KEY_A]) {
+    if(keys[GLFW_KEY_D]) {
         this_camera->orbit_camera_traits.orbit_yaw += rotationSpeed * dt;
     }
-    if(keys[GLFW_KEY_D]) {
+    if(keys[GLFW_KEY_A]) {
         this_camera->orbit_camera_traits.orbit_yaw -= rotationSpeed * dt;
     }
     if(keys[GLFW_KEY_W]) {
