@@ -18,9 +18,7 @@ void load_default_shader(Renderer* renderer) {
 }
 
 void render(Renderer* renderer, Scene* scene, float deltaTime) {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);   
 
     camera_process_input(renderer->camera, deltaTime);
     mat4s viewMatrix = camera_get_vmatrix(renderer->camera);
@@ -33,4 +31,20 @@ void render(Renderer* renderer, Scene* scene, float deltaTime) {
     for(unsigned int q = 0; q < scene->scene_objects.object_count; q++) {
         render_object(&scene->scene_objects.objects[q], renderer->shader);
     }
+}
+
+void clear() {
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void destroy_renderer(Renderer** renderer) {
+    if(!*renderer) {
+        log_info("Invalid Renderer* passed to destroy_renderer()!");
+        return;
+    }
+
+    destroy_shader(&(*(renderer))->shader);
+    destroy_camera(&(*(renderer))->camera);
+    (*(renderer)) = NULL;
 }

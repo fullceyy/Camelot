@@ -18,6 +18,7 @@ typedef struct {
 } Object;
 
 Object* create_object(MESH_TYPE mesh_type);
+Object* load_object(const char* path);
 void destroy_object(Object* this_object);
 void load_cube(Object* this_object);
 void setup_attributes_based_on_type(Object* this_object);

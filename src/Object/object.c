@@ -39,6 +39,20 @@ void load_cube(Object* this_object) {
     initialize_mesh(this_object->mesh);
 }
 
+Object* load_object(const char* path) {
+    Object* test_load_object = malloc(get_object_struct_size());
+    test_load_object->mesh = parse_mesh_data(path);
+    test_load_object->mesh_type = COLOR_MESH;
+    test_load_object->transform.model = glms_mat4_identity();
+    test_load_object->transform.position = glms_vec3_zero();
+    test_load_object->transform.rotation = glms_vec3_zero();
+    test_load_object->transform.scale = glms_vec3_one();
+    
+    setup_attributes_based_on_type(test_load_object);
+    initialize_mesh(test_load_object->mesh);
+    return test_load_object;
+}
+
 void setup_attributes_based_on_type(Object* this_object) {
     switch(this_object->mesh_type) {
         case COLOR_MESH:

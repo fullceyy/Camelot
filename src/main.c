@@ -50,7 +50,6 @@ int main(void) {
     glfwSetWindowUserPointer(getWindow(&appWindow), renderer->camera);
 
     glfwSetKeyCallback(getWindow(&appWindow), key_callback);
-    bool h = true;
     /* Main loop */
     // glViewport(0, 0, (GLsizei)appWindow.m_Width,(GLsizei)appWindow.m_Height);
     float deltaTime = 0.f;
@@ -59,19 +58,15 @@ int main(void) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        render(renderer, lorem_scene, deltaTime);
         
-        if(h) {
-            renderer->ctx = get_current_render_state();
-            h = false;
-        }
+        clear();
+        render(renderer, lorem_scene, deltaTime);
 
         glfwPollEvents();
         glfwSwapBuffers(getWindow(&appWindow));
     }
-    destroy_camera(&renderer->camera);
-    destroy_shader(&renderer->shader);
-
+    destroy_scene(&lorem_scene);
+    destroy_renderer(&renderer);
     glfwDestroyWindow(getWindow(&appWindow));
     glfwTerminate();
     return 0;

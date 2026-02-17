@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <cglm/cglm.h>
+#include <string.h>
 
 typedef struct Mesh Mesh;
 
@@ -16,11 +17,12 @@ void load_raw_mesh_indices(Mesh* mesh_item, unsigned int* mesh_indices, size_t m
 void load_mesh_data(Mesh* mesh_item, fBuffer* mesh_data);
 void load_mesh_indices(Mesh* mesh_item, uiBuffer* mesh_indices);
 
-
 void initialize_mesh(Mesh* mesh_item);
 void draw_mesh(Mesh* mesh_item);
 void destroy_mesh(Mesh** mesh_item);
 
 void set_mesh_data_offset(Mesh* mesh_item, unsigned int offset_value);
 void set_mesh_attribute(Mesh* mesh_item, unsigned int attrib_el_count);
+
+Mesh* parse_mesh_data(const char* path);
 #endif

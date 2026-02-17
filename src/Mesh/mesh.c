@@ -18,7 +18,10 @@ struct Mesh {
     unsigned int VBO;
     unsigned int EBO;
     
+    // amount of attribs
     size_t offsetCount;
+
+    // how much data does each attrib have, make sure they are in order.
     unsigned int* offset;
 
     fBuffer* mesh_data;
@@ -49,12 +52,14 @@ void load_raw_mesh_data(Mesh* mesh_item, float* mesh_data, size_t mesh_data_size
         return;
     }
 
-    mesh_item->mesh_data = new_fbuffer();
-    if(!mesh_item->mesh_data) {
-        log_info("load_raw_mesh_data mesh_data is not allocated!");
-        return;
+    if(mesh_item->mesh_data == NULL) {
+        mesh_item->mesh_data = new_fbuffer();
+        // if(!mesh_item->mesh_data) {
+        //     log_info("load_raw_mesh_data mesh_data is not allocated!");
+        //     return;
+        // }
     }
-
+    
     fpush_buffer_batch_data(mesh_item->mesh_data, mesh_data, mesh_data_size);
 }
 
@@ -81,13 +86,10 @@ void load_raw_mesh_indices(Mesh* mesh_item, unsigned int* mesh_indices, size_t m
         log_info("load_raw_mesh_indices invalid parameters!");
         return;
     }
-
-    mesh_item->mesh_indices = new_uibuffer();
-    if(!mesh_item->mesh_indices) {
-        log_info("load_raw_mesh_indices mesh_data is not allocated!");
-        return;
-    } 
-
+    
+    if(mesh_item->mesh_indices == NULL) {
+        mesh_item->mesh_indices = new_uibuffer();
+    }
     upush_buffer_batch_data(mesh_item->mesh_indices, mesh_indices, mesh_indices_size);
 }
 
@@ -98,7 +100,9 @@ void set_mesh_data_offset(Mesh* mesh_item, unsigned int offset_value) {
     }
 
     if(mesh_item->offset == NULL) {
-        mesh_item->offset = malloc(sizeof(unsigned int));
+        mesh_item->offset = malloc(sizeof(unsigned int) * 2);
+    } else {
+        mesh_item->offset = realloc(mesh_item->offset, sizeof(unsigned int) * (mesh_item->offsetCount + 1));
     }
     
     if(!mesh_item->offset) {
@@ -112,6 +116,10 @@ void set_mesh_data_offset(Mesh* mesh_item, unsigned int offset_value) {
 
 
 void initialize_mesh(Mesh* mesh_item) {
+    /* quick debug of buffer counts */
+    printf("%zu\n", mesh_item->mesh_data->count);
+    printf("%zu\n", mesh_item->mesh_indices->count);
+    /* quick debug of buffer counts */
     if(!mesh_item) {
         log_info("initialize_mesh mesh_item not valid!");
         return;
@@ -199,4 +207,50 @@ void set_mesh_attribute(Mesh* mesh_item, unsigned int attrib_el_count) {
 
     set_mesh_data_offset(mesh_item, attrib_el_count);
     // set_buffer_offset(mesh_item->mesh_data, attrib_el_count);
+}
+
+// right now is only done to read cube.h .obj file.
+Mesh* parse_mesh_data(const char* path) {
+    FILE* f = fopen(path, "r");
+    char line[1024];
+
+    Mesh* parsed_mesh = create_mesh();
+    // float* tmp = malloc(sizeof(float) * 512);
+    // unsigned int* idcs = malloc(sizeof(unsigned int) * 512);
+    // size_t idx = 0;
+    // size_t iidx = 0;
+    while(fgets(line, sizeof(line), f)) {
+        if (strncmp(line, "v ", 2) == 0) {
+            float vertex[6];
+            // sscanf(line, "v %f %f %f %f %f %f", 
+            //     &tmp[idx], &tmp[idx + 1], &tmp[idx + 2],
+            //     &tmp[idx + 3], &tmp[idx + 4], &tmp[idx + 5]);
+            int count = sscanf(line, 
+            "v %f %f %f %f %f %f",
+            &vertex[0], &vertex[1], &vertex[2],
+            &vertex[3], &vertex[4], &vertex[5]);
+            if(count == 6)
+                load_raw_mesh_data(parsed_mesh, vertex, 6);
+        }
+            // load_raw_mesh_data(parsed_mesh, &tmp[idx], 6);
+            // idx += 6;
+        // } else if (strncmp(line, "f ", 2) == 0) {
+        //     unsigned int idcs[3];
+        //     sscanf(line, "f %d %d %d",
+        //         &idcs[iidx], &idcs[iidx + 1], &idcs[iidx + 2]);
+            
+        //     load_raw_mesh_idcs(parsed_mesh->mesh_indices, idcs, sizeof(idcs) / sizeof(idcs[0]));
+        //     iidx += 3;
+        // }
+        else if (strncmp(line, "f ", 2) == 0) {
+            unsigned int face[3];
+            sscanf(line, "f %u %u %u",
+                &face[0], &face[1], &face[2]);
+            // OBJ is 1-based
+            face[0]--; face[1]--; face[2]--;
+
+            load_raw_mesh_indices(parsed_mesh, face, 3);
+        }
+    }
+    return parsed_mesh;
 }

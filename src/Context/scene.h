@@ -26,6 +26,6 @@ typedef struct {
 // Scene* initialize_scene();
 Scene* initialize_lorem_scene();
 void scene_append(Scene* scene, Object* object);
-// void append_object_to_scene(Scene* scene, Object* _object);
+void destroy_scene(Scene** scene);
 
 #endif
