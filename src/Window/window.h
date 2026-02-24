@@ -18,6 +18,6 @@ typedef struct {
 void CreateWindow(CamelWindow*);
 GLFWwindow* getWindow(CamelWindow*);
 
-void set_viewport();
-
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void window_size_callback(GLFWwindow* window, int width, int height);
 #endif

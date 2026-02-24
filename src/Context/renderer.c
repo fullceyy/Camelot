@@ -9,12 +9,20 @@ Renderer* initialize_renderer(void) {
     return rnd;
 }
 
+void load_shader(Renderer* renderer, Shader* shader) {
+    if(!renderer || !shader) {
+        log_info("Invalid Renderer* || Shader* passed to load_shader()!");
+        return;
+    }
+    renderer->shader = shader;
+}
+
 void load_default_shader(Renderer* renderer) {
     if(!renderer) {
         log_info("Invalid renderer ptr passed to load_shader()!");
         return;
     }
-    renderer->shader = create_shader();
+    // renderer->shader = create_shader();
 }
 
 void render(Renderer* renderer, Scene* scene, float deltaTime) {
@@ -25,8 +33,8 @@ void render(Renderer* renderer, Scene* scene, float deltaTime) {
     // m_width and m_height for projection should actually be taken from ctx later.
     mat4s projection = glms_perspective(0.78f, 800.f / 600.f, 0.1f, 512.0f);
 
-    set_shader_mat4s(renderer->shader, "view", viewMatrix);
-    set_shader_mat4s(renderer->shader, "projection", projection);
+    set_shader_mat4s(renderer->shader->program_id, "view", viewMatrix);
+    set_shader_mat4s(renderer->shader->program_id, "projection", projection);
 
     for(unsigned int q = 0; q < scene->scene_objects.object_count; q++) {
         render_object(&scene->scene_objects.objects[q], renderer->shader);
@@ -44,7 +52,7 @@ void destroy_renderer(Renderer** renderer) {
         return;
     }
 
-    destroy_shader(&(*(renderer))->shader);
+    // destroy_shader(&(*(renderer))->shader);
     destroy_camera(&(*(renderer))->camera);
     (*(renderer)) = NULL;
 }

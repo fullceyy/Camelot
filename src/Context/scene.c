@@ -10,7 +10,7 @@ Scene* initialize_lorem_scene() {
         .objects = malloc(get_object_struct_size() * OBJECT_CAP),
     };   
 
-    Object* parser_test = load_object("C:/dev/Camelot/src/Shapes/cube.obj");
+    Object* parser_test = load_object("src/Shapes/cube.obj");
     transform_set_position(get_object_transform(parser_test), (vec3s){.x = 1.f, .y = 1.f, .z = 1.f});    
     // Object* test_cube = create_object(COLOR_MESH);
     // load_cube(test_cube);

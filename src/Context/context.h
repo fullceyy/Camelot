@@ -8,15 +8,6 @@
 #include "GLFW/glfw3.h"
 #include "Log/log.h"
 
-/*PIPELINE MADNESS NOTES: 
-
-    1. VERTEX SPECS
-    deals with -> Vertex Array Objects, Vertex Buffer Objects.
-    VAO - define what data each vertex has,
-    VBO - stores the actual data.
-
-    */
-
 typedef struct {
     GLint program;
     GLint VAO;
@@ -24,10 +15,15 @@ typedef struct {
     bool GLdepth;
     bool GLblend;
     bool GLcullface;
+
+    int major_version_value;
+    int minor_version_value;
+    int ogl_profile_value;
+    int ogl_resizable_value;
 } GLContext;
 
-GLContext* get_current_render_state(void);
-
-void apply_stored_render_state(GLContext* ptr);
+void init(GLContext* ctx);
+// GLContext* get_current_render_state(void);
+// void apply_stored_render_state(GLContext* ptr);
 
 #endif

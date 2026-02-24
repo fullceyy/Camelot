@@ -5,15 +5,9 @@ void CreateWindow(CamelWindow* props) {
         log_info("CamelWindow::CreateWindow passed arg is NULL!");
         return;
     }        
-    /* Request OpenGL 3.3 Core */
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+    // glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
     /* Window Related Hints */
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    glfwWindowHint(GLFW_REFRESH_RATE, 60); // ignored for windowed mode windows
-
+    // glfwWindowHint(GLFW_REFRESH_RATE, 60); // ignored for windowed mode windows
     props->m_Window = glfwCreateWindow(
         props->m_Width, 
         props->m_Height, 
@@ -26,6 +20,8 @@ void CreateWindow(CamelWindow* props) {
        log_info("CamelWindow::m_Window was not initialized!");
        return; 
     }
+    
+    glfwSetWindowUserPointer(props->m_Window, props);
 }
 
 GLFWwindow* getWindow(CamelWindow* props) {
@@ -34,4 +30,16 @@ GLFWwindow* getWindow(CamelWindow* props) {
 
     log_info("CamelWindow::m_Window unable to getWindow call!");
     return NULL;
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    printf("Framebuffer size callback called!\n");
+    glViewport(0, 0, width, height);
+}
+
+void window_size_callback(GLFWwindow* window, int width, int height) {
+    CamelWindow* props = (CamelWindow*)glfwGetWindowUserPointer(window);
+    props->m_Width = width;
+    props->m_Height = height;
+    printf("Resize detected: %d, %d\n", width, height);
 }

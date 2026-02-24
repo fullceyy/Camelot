@@ -79,8 +79,9 @@ Transform* get_object_transform(Object* this_object) {
 }
 
 void render_object(Object* this_object, Shader* this_shader) {
-    shader_bind(this_shader);
-    
-    set_shader_mat4s(this_shader, "model", this_object->transform.model);
+    // shader_bind(this_shader);
+    bind_shader(this_shader);
+
+    set_shader_mat4s(this_shader->program_id, "model", this_object->transform.model);
     draw_mesh(this_object->mesh);
 }

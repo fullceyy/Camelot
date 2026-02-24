@@ -3,12 +3,9 @@
 
 #include "context.h"
 #include "scene.h"
-
 #include "Camera/camera.h"
 #include "Shader/shader.h"
 
-
-// look into batch rendering
 typedef struct {
     GLContext* ctx;
     Camera* camera;
@@ -16,6 +13,7 @@ typedef struct {
 } Renderer;
 
 Renderer* initialize_renderer(void);
+void load_shader(Renderer* renderer, Shader* shader);
 void load_default_shader(Renderer* renderer);
 void render(Renderer* renderer, Scene* scene, float deltaTime);
 void clear();

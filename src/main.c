@@ -1,27 +1,27 @@
 #include <stdio.h>
 #include <string.h>
 #include <Window/window.h>
-#include <Shader/shader.h>
-#include <Object/object.h>
-#include <Camera/camera.h>
 #include <Context/context.h>
 #include <Context/scene.h>
 #include <Context/renderer.h>
 
-int main(void) {
-    /* Initialize GLFW */
+int main(void) {    
     if (!glfwInit()) {
         fprintf(stderr, "Failed to initialize GLFW\n");
         return -1;
     }
 
-    /* Request OpenGL 3.3 Core */
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
+    GLContext ctx = (GLContext) {
+        .major_version_value = 3,
+        .minor_version_value = 3,
+        .ogl_profile_value = GLFW_OPENGL_CORE_PROFILE,
+        .ogl_resizable_value = GLFW_TRUE
+    };
+
+    init(&ctx);    
+
     /* Create window */
-    CamelWindow appWindow = {
+    CamelWindow appWindow = (CamelWindow) {
         .m_Window = NULL, 
         .m_Width = 800, 
         .m_Height = 600, 
@@ -31,7 +31,7 @@ int main(void) {
     };
     
     CreateWindow(&appWindow);
-    glfwMakeContextCurrent(getWindow(&appWindow));
+    glfwMakeContextCurrent(appWindow.m_Window);
     /* Initialize GLAD */
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         fprintf(stderr, "Failed to initialize GLAD\n");
@@ -40,21 +40,22 @@ int main(void) {
     printf("OpenGL version: %s\n", glGetString(GL_VERSION));
 
     /* Initialize Renderer */
-    Renderer* renderer = initialize_renderer();
-    load_default_shader(renderer);
+    Shader shader = { .program_id = shader_vf_load("res/basic.vert", "res/basic.frag") };
+    Renderer* renderer = initialize_renderer();    
+    load_shader(renderer, &shader);
 
     /* Scene */
     Scene* lorem_scene = initialize_lorem_scene();
 
     /* Camera Calls */
-    glfwSetWindowUserPointer(getWindow(&appWindow), renderer->camera);
-
-    glfwSetKeyCallback(getWindow(&appWindow), key_callback);
+    glfwSetWindowUserPointer(appWindow.m_Window, renderer->camera);
+    glfwSetKeyCallback(appWindow.m_Window, key_callback);
     /* Main loop */
-    // glViewport(0, 0, (GLsizei)appWindow.m_Width,(GLsizei)appWindow.m_Height);
+    glfwSetFramebufferSizeCallback(appWindow.m_Window, framebuffer_size_callback);
+    glfwSetWindowSizeCallback(appWindow.m_Window, window_size_callback);    
     float deltaTime = 0.f;
     float lastFrame = 0.f;
-    while (!glfwWindowShouldClose(getWindow(&appWindow))) {
+    while (!glfwWindowShouldClose(appWindow.m_Window)) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -63,11 +64,11 @@ int main(void) {
         render(renderer, lorem_scene, deltaTime);
 
         glfwPollEvents();
-        glfwSwapBuffers(getWindow(&appWindow));
+        glfwSwapBuffers(appWindow.m_Window);
     }
     destroy_scene(&lorem_scene);
     destroy_renderer(&renderer);
-    glfwDestroyWindow(getWindow(&appWindow));
+    glfwDestroyWindow(appWindow.m_Window);
     glfwTerminate();
     return 0;
 }

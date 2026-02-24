@@ -1,7 +1,7 @@
 Camera related;
 1. Finish Camera by adding mouse movement
 2. Limit the free camera movement by bounding it to the scene box
-3. Add ability to orbit camera up and down, as well as diagonal movement
+-- 3. Add ability to orbit camera up and down, as well as diagonal movement
 4. Add ability to zoom in and out in camera orbit mode
 
 Object related;
@@ -10,7 +10,7 @@ Object related;
 3. Review Object implementation, seems pretty sketchy for now, maybe not later
 
 UI related;
-X 1. Add IMGUI ability to set object color / object texture
+X 1. Add GUI ability to set object color / object texture
 2. Work on added nuklear, find a better way of restoring the global state, remodel the ui.
 
 GLSL related;
@@ -18,13 +18,13 @@ GLSL related;
 2. Look into UBOs
 3. Look into ADVANCED GLSL; https://vis.uni-jena.de/Lecture/ComputerGraphics2/Lec5_AdvancedDataGLSL.pdf
 
-Buffer related;
-1. Look into fBuffer and uBuffer
+-- Buffer related;
+-- 1. Look into fBuffer and uBuffer
 
 Design related IMPORTANT;
-1. LOOK INTO THE FACT THAT YOUR BUFFER.H STORES VERTEX LAYOUT, WHEN IT SHOULD NOT DO THAT,
-    YOUR MESH IS THE ONE THAT IS SUPPOSED TO BE DOING THAT, THEREFORE YOU HAVE TO MOVE ALL THE COUNTING TO THE MESH.H
-    NOT IN BUFFER.H
+-- 1. LOOK INTO THE FACT THAT YOUR BUFFER.H STORES VERTEX LAYOUT, WHEN IT SHOULD NOT DO THAT,
+--     YOUR MESH IS THE ONE THAT IS SUPPOSED TO BE DOING THAT, THEREFORE YOU HAVE TO MOVE ALL THE COUNTING TO THE MESH.H
+--     NOT IN BUFFER.H
 2. I HAVE TO MAKE SURE THAT MY .OBJ READER THAT I WILL ADD IN THE FUTURE WILL INFER AND TELL TO MESH.H WHAT KIND
     OF ATTRIBUTES HAS TO BE SET, FOR EXAMPLE:
     while (read_line(file, line)) {
@@ -43,5 +43,3 @@ Design related;
 1. What doesn't have to be opaque?
 2. What should be accesible through main thread?
 3. Static keys is the answer for Camera movement?
-4. Should I avoid static memory usage at all costs?
-5. If I can't use static memory, what should I do with my Transform object?
