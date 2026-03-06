@@ -15,8 +15,8 @@ typedef struct {
 } CamelWindow;
 
 
-void CreateWindow(CamelWindow*);
-GLFWwindow* getWindow(CamelWindow*);
+void create_window(CamelWindow*);
+GLFWwindow* get_window(CamelWindow*);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void window_size_callback(GLFWwindow* window, int width, int height);

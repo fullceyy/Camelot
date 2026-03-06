@@ -1,8 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "context.h"
-#include "scene.h"
+#include "Context/context.h"
+#include "Scene/scene.h"
 #include "Camera/camera.h"
 #include "Shader/shader.h"
 

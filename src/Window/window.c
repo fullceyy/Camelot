@@ -1,6 +1,6 @@
 #include "window.h"
 
-void CreateWindow(CamelWindow* props) {
+void create_window(CamelWindow* props) {
     if(props == NULL) {
         log_info("CamelWindow::CreateWindow passed arg is NULL!");
         return;
@@ -24,7 +24,7 @@ void CreateWindow(CamelWindow* props) {
     glfwSetWindowUserPointer(props->m_Window, props);
 }
 
-GLFWwindow* getWindow(CamelWindow* props) {
+GLFWwindow* get_window(CamelWindow* props) {
     if(props->m_Window != NULL)
         return props->m_Window;
 

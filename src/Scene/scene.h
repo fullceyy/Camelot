@@ -7,12 +7,6 @@
 #include "Shader/shader.h"
 #include "Camera/camera.h"
 
-// typedef struct {
-//     size_t count;
-//     size_t capacity;
-//     Object** _objects;
-// } Object_da_t;
-
 typedef struct {
   size_t object_count;
   size_t object_capacity;

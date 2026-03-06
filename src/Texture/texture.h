@@ -7,4 +7,6 @@ typedef struct {
     
 } Texture;
 
+void create_texture();
+
 #endif

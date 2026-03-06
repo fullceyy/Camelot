@@ -2,8 +2,8 @@
 #include <string.h>
 #include <Window/window.h>
 #include <Context/context.h>
-#include <Context/scene.h>
-#include <Context/renderer.h>
+#include <Scene/scene.h>
+#include <Renderer/renderer.h>
 
 int main(void) {    
     if (!glfwInit()) {
@@ -30,7 +30,7 @@ int main(void) {
         .m_Title = "Camel"
     };
     
-    CreateWindow(&appWindow);
+    create_window(&appWindow);
     glfwMakeContextCurrent(appWindow.m_Window);
     /* Initialize GLAD */
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -66,6 +66,7 @@ int main(void) {
         glfwPollEvents();
         glfwSwapBuffers(appWindow.m_Window);
     }
+    
     destroy_scene(&lorem_scene);
     destroy_renderer(&renderer);
     glfwDestroyWindow(appWindow.m_Window);
